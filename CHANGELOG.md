@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.3.1] - 2026-05-28
+
+### Fixed
+- CI: añadido `tags: ['v*']` al trigger `push` para que el job `release` se ejecute al pushear tags
+- El .vsix ahora se adjunta correctamente a la GitHub Release
+
 ## [0.3.0] - 2026-05-28
 
 ### Fixed

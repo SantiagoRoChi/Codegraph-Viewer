@@ -3,6 +3,7 @@ name: CI
 on:
   push:
     branches: [master]
+    tags: ['v*']
   pull_request:
     branches: [master]
 
@@ -54,7 +55,7 @@ jobs:
         run: npm run compile
 
       - name: Package VSIX
-        run: npx vsce package --out codegraph-viewer-${{ github.ref_name }}.vsix
+        run: npx vsce package
 
       - uses: actions/upload-artifact@v4
         with:
@@ -66,5 +67,4 @@ jobs:
         with:
           name: Release ${{ github.ref_name }}
           body_path: CHANGELOG.md
-          files: codegraph-viewer-${{ github.ref_name }}.vsix
-          generate_release_notes: true
+          files: "*.vsix"
