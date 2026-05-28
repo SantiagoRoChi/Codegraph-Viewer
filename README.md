@@ -10,15 +10,17 @@
   <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg" alt="Platform">
 </p>
 
----
-
-Extensión para VS Code que permite visualizar y navegar por los nodos del archivo `codegraph.db` generado por [CodeGraph](https://github.com/colbymchenry/codegraph), el indexador semántico de código.
-
 <p align="center">
+  <a href="https://github.com/SantiagoRoChi/Codegraph-Viewer/releases/latest">📥 Descargar VSIX</a>
+  ·
   <a href="https://github.com/SantiagoRoChi/Codegraph-Viewer">GitHub</a>
   ·
   <a href="https://github.com/SantiagoRoChi/Codegraph-Viewer/issues">Reportar Bug</a>
 </p>
+
+---
+
+Extensión para VS Code que permite visualizar y navegar por los nodos del archivo `codegraph.db` generado por [CodeGraph](https://github.com/colbymchenry/codegraph), el indexador semántico de código.
 
 ## ✨ Características
 
@@ -35,20 +37,25 @@ Extensión para VS Code que permite visualizar y navegar por los nodos del archi
 
 ## 📦 Instalación
 
-### Desde el Marketplace (próximamente)
+### Descargar VSIX (recomendado)
+
+Descarga el archivo `.vsix` desde la [última release](https://github.com/SantiagoRoChi/Codegraph-Viewer/releases/latest) e instálalo:
 
 ```bash
-code --install-extension codegraph-viewer.vsix
+code --install-extension codegraph-viewer-*.vsix
 ```
+
+O desde VS Code: Extensiones → "..." → Install from VSIX...
 
 ### Desde el código fuente
 
 ```bash
-git clone <repo>
-cd codegraph-viewer
+git clone https://github.com/SantiagoRoChi/Codegraph-Viewer.git
+cd Codegraph-Viewer
 npm install
 npm run compile
-code --install-extension codegraph-viewer.vsix
+npm run package
+code --install-extension codegraph-viewer-*.vsix
 ```
 
 ## 🚀 Uso
@@ -62,7 +69,7 @@ code --install-extension codegraph-viewer.vsix
 2. Abre el proyecto en VS Code
 
 3. Abre el **CodeGraph Viewer**:
-   - Click en el icono del Activity Bar (🕸️)
+   - Click en el icono del Activity Bar
    - O `Ctrl+Shift+P` → `CodeGraph: Open CodeGraph`
 
 4. Navega por el grafo:
@@ -87,42 +94,49 @@ code --install-extension codegraph-viewer.vsix
 | `codegraph.editor.codeLens` | Mostrar enlace "View in Graph" sobre definiciones | `true` |
 | `codegraph.editor.hover` | Mostrar información al pasar el ratón | `true` |
 
-## 🧪 Desarrollo
+## 🔧 Desarrollo
+
+### Requisitos
+
+- [Node.js](https://nodejs.org/) >= 18
+- [VS Code](https://code.visualstudio.com/) >= 1.85
 
 ### Compilar
 
 ```bash
 npm install
 npm run compile    # Compilar TypeScript
-npm run watch      # Modo watch
+npm run watch      # Modo watch (recompila automáticamente)
 ```
 
 ### Empaquetar
 
 ```bash
-npm install -g @vscode/vsce
-vsce package
+npm run package
 ```
 
-Esto genera `codegraph-viewer-0.1.0.vsix`.
+Genera `codegraph-viewer-<version>.vsix` en la raíz del proyecto. Este archivo se puede instalar directamente en VS Code.
 
-### Publicar en Marketplace
+### Publicar una Release
 
-```bash
-vsce publish
-```
-
-Requiere un token de acceso personal de Azure DevOps en la variable `VSCE_PAT`.
+1. Actualiza la versión en `package.json` siguiendo [semver](https://semver.org/)
+2. Actualiza `CHANGELOG.md`
+3. Crea un tag y pushea:
+   ```bash
+   git tag v0.1.0
+   git push origin v0.1.0
+   ```
+4. El pipeline de GitHub Actions generará automáticamente el `.vsix` y creará una **GitHub Release** con el archivo adjunto
 
 ## 🤖 CI/CD
 
-Este repositorio incluye un pipeline de GitHub Actions que:
+Este repositorio incluye un pipeline de GitHub Actions (`.github/workflows/ci.yml`) que:
 
 - **Compila** la extensión en cada push/PR
-- **Publica** automáticamente cuando se crea un tag `v*`
-- Genera el `.vsix` como artefacto
+- **Genera el `.vsix`** en cada compilación (disponible como artefacto)
+- **Crea una Release** automáticamente cuando se pushea un tag `v*`, con el `.vsix` adjunto para descarga directa
 
-Ver [`.github/workflows/publish.yml`](.github/workflows/publish.yml).
+Así cualquiera puede descargar la última versión desde la sección [Releases](https://github.com/SantiagoRoChi/Codegraph-Viewer/releases) del repositorio.
 
 ## 📄 Licencia
 
@@ -130,3 +144,4 @@ MIT
 
 ---
 
+Hecho con ❤️ para desarrolladores que usan CodeGraph
