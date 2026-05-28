@@ -13,6 +13,7 @@
   },
   "homepage": "https://github.com/SantiagoRoChi/Codegraph-Viewer",
   "license": "MIT",
+  "icon": "resources/icon.png",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -93,7 +94,7 @@
         {
           "id": "codegraph",
           "title": "CodeGraph",
-          "icon": "$(graph)"
+          "icon": "resources/activity-icon.svg"
         }
       ]
     },
@@ -227,6 +228,7 @@
     "@typescript-eslint/parser": "^6.15.0",
     "@vscode/vsce": "^2.22.0",
     "eslint": "^8.56.0",
+    "sharp": "^0.34.5",
     "typescript": "^5.3.3"
   },
   "dependencies": {

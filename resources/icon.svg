@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1e2e"/>
+      <stop offset="100%" style="stop-color:#181825"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#89b4fa"/>
+      <stop offset="100%" style="stop-color:#74c7ec"/>
+    </linearGradient>
+    <linearGradient id="node2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a6e3a1"/>
+      <stop offset="100%" style="stop-color:#94e2d5"/>
+    </linearGradient>
+    <linearGradient id="node3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5c2e7"/>
+      <stop offset="100%" style="stop-color:#cba6f7"/>
+    </linearGradient>
+    <linearGradient id="node4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fab387"/>
+      <stop offset="100%" style="stop-color:#f9e2af"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="128" cy="128" r="120" fill="url(#bg)" stroke="#313244" stroke-width="4"/>
+
+  <!-- Edges -->
+  <line x1="100" y1="80" x2="160" y2="70" stroke="#585b70" stroke-width="2" opacity="0.6"/>
+  <line x1="100" y1="80" x2="80" y2="140" stroke="#585b70" stroke-width="2" opacity="0.6"/>
+  <line x1="100" y1="80" x2="150" y2="140" stroke="#585b70" stroke-width="2" opacity="0.6"/>
+  <line x1="160" y1="70" x2="150" y2="140" stroke="#585b70" stroke-width="2" opacity="0.6"/>
+  <line x1="80" y1="140" x2="150" y2="140" stroke="#585b70" stroke-width="2" opacity="0.6"/>
+  <line x1="80" y1="140" x2="130" y2="180" stroke="#585b70" stroke-width="2" opacity="0.6"/>
+  <line x1="150" y1="140" x2="130" y2="180" stroke="#585b70" stroke-width="2" opacity="0.6"/>
+  <line x1="160" y1="70" x2="180" y2="110" stroke="#585b70" stroke-width="2" opacity="0.6"/>
+  <line x1="180" y1="110" x2="150" y2="140" stroke="#585b70" stroke-width="2" opacity="0.6"/>
+
+  <!-- Arrows (code bracket style) -->
+  <circle cx="100" cy="80" r="14" fill="url(#accent)" stroke="#89b4fa" stroke-width="2"/>
+  <text x="100" y="85" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="12" font-weight="bold">F</text>
+
+  <circle cx="160" cy="70" r="12" fill="url(#node2)" stroke="#a6e3a1" stroke-width="2"/>
+  <text x="160" y="75" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="10" font-weight="bold">C</text>
+
+  <circle cx="80" cy="140" r="10" fill="url(#node3)" stroke="#f5c2e7" stroke-width="2"/>
+  <text x="80" y="145" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="8" font-weight="bold">M</text>
+
+  <circle cx="150" cy="140" r="11" fill="url(#node4)" stroke="#fab387" stroke-width="2"/>
+  <text x="150" y="145" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="9" font-weight="bold">V</text>
+
+  <circle cx="130" cy="180" r="9" fill="url(#accent)" stroke="#89b4fa" stroke-width="2"/>
+  <text x="130" y="184" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="7" font-weight="bold">E</text>
+
+  <circle cx="180" cy="110" r="8" fill="#f38ba8" stroke="#f38ba8" stroke-width="2"/>
+  <text x="180" y="114" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="6" font-weight="bold">P</text>
+
+  <!-- Code bracket decorations -->
+  <path d="M 50 105 L 42 115 L 50 125" fill="none" stroke="#585b70" stroke-width="2.5" opacity="0.4"/>
+  <path d="M 206 105 L 214 115 L 206 125" fill="none" stroke="#585b70" stroke-width="2.5" opacity="0.4"/>
+</svg>
