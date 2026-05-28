@@ -15,8 +15,20 @@ let treeProvider: CodeGraphTreeProvider;
 let searchProvider: CodeGraphSearchProvider;
 let outputChannel: vscode.OutputChannel;
 
+let statusBarItem: vscode.StatusBarItem;
+
 export async function activate(context: vscode.ExtensionContext) {
   outputChannel = vscode.window.createOutputChannel('CodeGraph');
+  outputChannel.show(true);
+  outputChannel.appendLine('CodeGraph Viewer activating...');
+
+  statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 10);
+  statusBarItem.text = '$(graph) CodeGraph...';
+  statusBarItem.tooltip = 'CodeGraph Viewer';
+  statusBarItem.command = 'codegraph.openGraph';
+  statusBarItem.show();
+  context.subscriptions.push(statusBarItem);
+
   db = new CodeGraphDatabase(outputChannel);
 
   const opened = await db.open();
@@ -26,8 +38,15 @@ export async function activate(context: vscode.ExtensionContext) {
     if (stats) {
       outputChannel.appendLine(`  ${stats.nodeCount} nodes, ${stats.edgeCount} edges, ${stats.fileCount} files`);
     }
+    statusBarItem.text = `$(graph) CodeGraph: ${stats?.nodeCount ?? 0} nodes`;
+    statusBarItem.tooltip = `${db.getDbPath()}\n${stats?.nodeCount ?? 0} nodes, ${stats?.edgeCount ?? 0} edges`;
   } else {
-    outputChannel.appendLine(`CodeGraph database not found at: ${db.getDbPath()}`);
+    const searchPath = db.getDbPath();
+    outputChannel.appendLine(`CodeGraph database not found`);
+    outputChannel.appendLine(`  Searched locations including: ${searchPath}`);
+    outputChannel.appendLine(`  Workspace folders: ${vscode.workspace.workspaceFolders?.map(f => f.uri.fsPath).join(', ') || '(none)'}`);
+    statusBarItem.text = '$(warning) CodeGraph: No DB';
+    statusBarItem.tooltip = 'CodeGraph database not found. Click to set path.';
   }
 
   treeProvider = new CodeGraphTreeProvider(db);
@@ -54,14 +73,17 @@ function registerCommands(context: vscode.ExtensionContext) {
       if (!db.isOpen()) {
         const retry = await db.open();
         if (!retry) {
-          vscode.window.showErrorMessage(
-            'CodeGraph database not found. Run "codegraph init" in your project.',
-            'Set Path'
-          ).then(choice => {
-            if (choice === 'Set Path') {
-              vscode.commands.executeCommand('codegraph.setDbPath');
-            }
-          });
+          outputChannel.show(true);
+          const result = await vscode.window.showErrorMessage(
+            'CodeGraph database not found. Run "codegraph init" in your project, or set the path manually.',
+            'Set Path',
+            'Show Log'
+          );
+          if (result === 'Set Path') {
+            vscode.commands.executeCommand('codegraph.setDbPath');
+          } else if (result === 'Show Log') {
+            outputChannel.show(true);
+          }
           return;
         }
       }
@@ -173,10 +195,17 @@ function registerCommands(context: vscode.ExtensionContext) {
       if (db.isOpen()) {
         await db.close();
       }
-      await db.open();
-      treeProvider.refresh();
-      searchProvider.refresh();
-      vscode.window.showInformationMessage('CodeGraph refreshed');
+      const opened = await db.open();
+      if (opened) {
+        const stats = db.getStats();
+        statusBarItem.text = `$(graph) CodeGraph: ${stats?.nodeCount ?? 0} nodes`;
+        statusBarItem.tooltip = `${db.getDbPath()}\n${stats?.nodeCount ?? 0} nodes, ${stats?.edgeCount ?? 0} edges`;
+        vscode.window.showInformationMessage('CodeGraph refreshed');
+      } else {
+        statusBarItem.text = '$(warning) CodeGraph: No DB';
+        statusBarItem.tooltip = 'CodeGraph database not found. Click to set path.';
+        vscode.window.showWarningMessage('CodeGraph database not found. Set the path or run "codegraph init".');
+      }
     })
   );
 
@@ -211,10 +240,19 @@ function registerCommands(context: vscode.ExtensionContext) {
         const config = vscode.workspace.getConfiguration('codegraph');
         await config.update('dbPath', newPath, vscode.ConfigurationTarget.Workspace);
         await db.close();
-        await db.open();
+        const opened = await db.open();
         treeProvider.refresh();
         searchProvider.refresh();
-        vscode.window.showInformationMessage(`CodeGraph database path set to: ${newPath}`);
+        if (opened) {
+          const stats = db.getStats();
+          statusBarItem.text = `$(graph) CodeGraph: ${stats?.nodeCount ?? 0} nodes`;
+          statusBarItem.tooltip = `${db.getDbPath()}\n${stats?.nodeCount ?? 0} nodes, ${stats?.edgeCount ?? 0} edges`;
+          vscode.window.showInformationMessage(`CodeGraph database path set to: ${newPath}`);
+        } else {
+          statusBarItem.text = '$(warning) CodeGraph: No DB';
+          statusBarItem.tooltip = 'CodeGraph database not found.';
+          vscode.window.showWarningMessage(`Failed to open database at: ${newPath}`);
+        }
       }
     })
   );
@@ -232,6 +270,9 @@ function registerCommands(context: vscode.ExtensionContext) {
 
       treeProvider.refresh();
       searchProvider.refresh();
+      const stats = db.getStats();
+      statusBarItem.text = `$(graph) CodeGraph: ${stats?.nodeCount ?? 0} nodes`;
+      statusBarItem.tooltip = `${filePath}\n${stats?.nodeCount ?? 0} nodes, ${stats?.edgeCount ?? 0} edges`;
       GraphPanel.createOrShow(context.extensionUri, db);
       vscode.window.showInformationMessage(`CodeGraph database loaded: ${path.basename(filePath)}`);
     })

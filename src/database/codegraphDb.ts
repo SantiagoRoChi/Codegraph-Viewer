@@ -36,6 +36,14 @@ export class CodeGraphDatabase {
       for (const folder of wsFolders) {
         searchPaths.push(path.join(folder.uri.fsPath, '.codegraph', 'codegraph.db'));
         searchPaths.push(path.join(folder.uri.fsPath, '.codegraph'));
+
+        // Also search up to 3 levels of parent directories
+        let parentDir = path.dirname(folder.uri.fsPath);
+        for (let i = 0; i < 3; i++) {
+          searchPaths.push(path.join(parentDir, '.codegraph', 'codegraph.db'));
+          searchPaths.push(path.join(parentDir, '.codegraph'));
+          parentDir = path.dirname(parentDir);
+        }
       }
     }
 
