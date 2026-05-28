@@ -1,5 +1,17 @@
 # Change Log
 
+## [0.2.0] - 2026-05-28
+
+### Added
+- Barra de estado con contador de nodos y estado de conexión
+- Output channel visible automáticamente al activarse
+- Notificación con botones "Set Path" y "Show Log" cuando no encuentra la DB
+- Búsqueda de `codegraph.db` en directorios padres del workspace (hasta 3 niveles)
+
+### Fixed
+- La extensión ahora muestra logs sin que el usuario tenga que buscar el canal manualmente
+- La barra de estado da feedback inmediato del estado de la base de datos
+
 ## [0.1.0] - 2026-05-28
 
 ### Added
