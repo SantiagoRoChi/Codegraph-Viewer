@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.3.0] - 2026-05-28
+
+### Fixed
+- Extension no se activaba al ejecutar comandos no listados en `activationEvents` — eliminado el bloque `activationEvents` para activación implícita desde `contributes`
+- `CodeGraph: Set Database Path` ahora funciona desde la paleta de comandos
+- Todos los comandos activan la extensión automáticamente
+
 ## [0.2.0] - 2026-05-28
 
 ### Added
